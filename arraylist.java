@@ -1,61 +1,61 @@
 import java.util.*;
-class arraylist
+class Node 
 {
-    static class Node
+    int data;
+    Node left,right;
+    Node(int key)
     {
-        int val;
-        ArrayList<Node>children;
-        public Node (int val)
-        {
-            this.val=val;
-            this.children=new ArrayList<Node>();
-        }
-    };
-    static class Pair
+        data=key;
+        left=right=null;
+    }
+}
+class evenodd 
+{
+    int difference(Node root)
     {
-        Node first;
-        int second;
-        public Pair(Node node,int val)
+        if(root==null)
+        return 0;
+        else 
         {
-            this.first=node;
-            this.second=val;
+            int evensum=0;
+            int oddsum=0;
+            int level=0;
+            Queue<Node> q=new LinkedList<>();
+            q.add(root);
+            while(q.size()!=0)
+            {
+                int size=q.size();
+                level++;
+                while(size>0)
+                {
+                    Node temp=q.remove();
+                    if(level%2==0)
+                    evensum=evensum+temp.data;
+                    else 
+                    oddsum=oddsum+temp.data;
+                    if(temp.left!=null)
+                    q.add(temp.left);
+                    if(temp.right!=null)
+                    q.add(temp.right);
+                    size--;
+                }
+            }
+            return oddsum-evensum;
         }
     }
-    static int evenOddLevelDifference(Node root)
-    {
-        int evenSum=0,oddSum=0;
-        Queue<Pair>q=new LinkedList<>();
-        q.add(new Pair(root,1));
-        while(!q.isEmpty())
-        {
-            Pair currNode=q.poll();
-            int currLevel=currNode.second;
-            int currVal=currNode.first.val;
-            if(currLevel%2==1)
-            {
-                oddSum+=currVal;
-            }
-            else
-            {
-                evenSum+=currVal;
-            }
-            for(Node child: currNode.first.children)
-            {
-                q.add(new Pair(child,currLevel+1));
-            }
-        }
-        return (oddSum-evenSum);
-    }
+}
+class tree 
+{
     public static void main(String args[])
     {
-        Node root=new Node(4);
-        root.children.add(new Node(2));
-        root.children.add(new Node(3));
-        root.children.add(new Node(-5));
-        root.children.get(0).children.add(new Node(-1));
-        root.children.get(0).children.add(new Node(3));
-        root.children.get(2).children.add(new Node(-2));
-        root.children.get(2).children.add(new Node(6));
-        System.out.println(evenOddLevelDifference(root));
+        Node root=new Node(5);
+        root.left=new Node(2);
+        root.right=new Node(1);
+        root.right.left=new Node(3);
+        root.right.left.left=new Node(4);
+        root.right.right=new Node(5);
+        evenodd ob=new evenodd();
+        int result=ob.difference(root);
+        System.out.println("the sum is: "+result);
     }
 }
